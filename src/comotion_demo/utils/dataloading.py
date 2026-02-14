@@ -214,7 +214,8 @@ def get_default_K(image: torch.Tensor) -> torch.Tensor:
     """Get a default approximate intrinsic matrix."""
     res = image.shape[-2:]
     max_res = max(res)
-    K = torch.tensor([[2 * max_res, 0, 0.5 * res[1]], [0, 2 * max_res, 0.5 * res[0]]])
+    f_factor = 1
+    K = torch.tensor([[f_factor * max_res, 0, 0.5 * res[1]], [0, f_factor * max_res, 0.5 * res[0]]])
     return K
 
 
@@ -229,6 +230,16 @@ def yield_image_and_K(
         image = convert_image_to_tensor(image)
         K = get_default_K(image)
         yield (image, K)
+
+def yield_image_and_K_and_Index(
+    input_path: Path,
+    start_frame: int,
+    num_frames: int,
+    frameskip: int = 1,
+) -> Generator[Tuple[torch.Tensor, torch.Tensor, int], None, None]:
+    """Generate image, intrinsic matrix, and frame index."""
+    for idx, (image, K) in enumerate(yield_image_and_K(input_path, start_frame, num_frames, frameskip)):
+        yield (image, K, start_frame + idx * frameskip)
 
 
 def prepare_network_inputs(

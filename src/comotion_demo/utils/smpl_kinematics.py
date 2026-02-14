@@ -18,7 +18,8 @@ NUM_PARTS_AUX = 27
 
 smpl_dir = os.path.join(os.path.dirname(__file__), "../data/smpl")
 extra_ref = torch.load(f"{smpl_dir}/extra_smpl_reference.pt", weights_only=True)
-smpl_model_path = f"{smpl_dir}/SMPL_NEUTRAL.pkl"
+# smpl_model_path = f"{smpl_dir}/SMPL_NEUTRAL.pkl"
+smpl_model_path = f"{smpl_dir}/SMPL_MALE.pkl"
 assert os.path.exists(smpl_model_path), (
     "Please download the neutral SMPL body model from https://smpl.is.tue.mpg.de/ and"
     "rename it to SMPL_NEUTRAL.pkl, copying it into src/comotion_demo/data/smpl/"
